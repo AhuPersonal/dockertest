@@ -1,0 +1,43 @@
+---
+title: "DSCI522 - Lab 3"
+author: "Ahu Oral"
+date: "14 October 2016"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(RCurl)
+library(tidyverse)
+```
+
+
+## Download the data
+```{r, echo=TRUE}
+raw_data <- getURL("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.csv", useragent="curl/7.39.0 Rcurl/1.95.4.5")
+my_dataset <- read.csv(textConnection(raw_data))
+head(my_dataset)
+```
+
+
+## Summarize the data
+
+```{r}
+summarized_data <- my_dataset %>%
+  filter(pclass == 1 | pclass == 2) %>%
+  select(pclass, survived, sex, age, fare)
+
+summary(summarized_data)
+```
+
+## Plotting the data
+
+
+```{r}
+my_plot <- ggplot(summarized_data, aes(summarized_data["age"], fill = summarized_data["survived"])) + 
+  geom_histogram(binwidth =5, color="black")
+my_plot
+```
